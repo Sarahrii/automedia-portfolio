@@ -358,10 +358,7 @@
             border-radius: 12px;
         }
 
-        .video-item.playing .video-overlay {
-            opacity: 0;
-            pointer-events: none;
-        }
+     
 .video-controls {
     display: flex;
     gap: 20px;
@@ -891,13 +888,13 @@
                         <source src="PORSCHEBefore.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                  <div class="video-overlay">
+            <div class="video-overlay">
     <div class="video-controls">
         <div class="play-btn"><i class="fas fa-play"></i></div>
-       
     </div>
     <div class="video-label before">Raw Footage</div>
 </div>
+
 
                 </div>
                 <div class="video-item">
@@ -905,13 +902,13 @@
                         <source src="PORSCHEAfter.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                  <div class="video-overlay">
+         <div class="video-overlay">
     <div class="video-controls">
         <div class="play-btn"><i class="fas fa-play"></i></div>
-        
     </div>
-    <div class="video-label before">Raw Footage</div>
+    <div class="video-label before">edited</div>
 </div>
+
 
                 </div>
             </div>
@@ -1041,57 +1038,27 @@
             });
             
         
-       // Play / Pause button toggle + auto-hide
+
+// زر تشغيل/إيقاف واحد في وسط الفيديو
 const playButtons = document.querySelectorAll('.play-btn');
 
 playButtons.forEach(button => {
-
     const videoItem = button.closest('.video-item');
     const video = videoItem.querySelector('video');
 
-    let hideTimeout;
-
-    // تشغيل / إيقاف
     button.addEventListener('click', () => {
-
         if (video.paused) {
             video.play();
             videoItem.classList.add('playing');
             button.innerHTML = '<i class="fas fa-pause"></i>';
-            
-            // إخفاء الزر بعد التشغيل
-            hideTimeout = setTimeout(() => {
-                button.style.opacity = '0';
-            }, 1500);
-
         } else {
             video.pause();
             videoItem.classList.remove('playing');
             button.innerHTML = '<i class="fas fa-play"></i>';
-            button.style.opacity = '1'; // يظهر عند الإيقاف
-        }
-    });
-
-    // إذا الماوس يتحرك داخل الفيديو → أظهر الزر
-    videoItem.addEventListener('mousemove', () => {
-        button.style.opacity = '1';
-        clearTimeout(hideTimeout);
-
-        // يخفي الزر إذا الفيديو شغّال
-        if (!video.paused) {
-            hideTimeout = setTimeout(() => {
-                button.style.opacity = '0';
-            }, 1500);
-        }
-    });
-
-    // إذا خرج الماوس → أخفيه لو الفيديو شغال
-    videoItem.addEventListener('mouseleave', () => {
-        if (!video.paused) {
-            button.style.opacity = '0';
         }
     });
 });
+
 
 
      
@@ -1184,6 +1151,7 @@ playButtons.forEach(button => {
     </script>
 </body>
 </html>
+
 
 
 

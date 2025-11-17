@@ -415,6 +415,11 @@
         .video-label.after {
             color: var(--secondary);
         }
+/* إخفاء النص وقت تشغيل الفيديو */
+.video-item.playing .video-label {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
         .services {
             background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary) 100%);
@@ -892,7 +897,7 @@
     <div class="video-controls">
         <div class="play-btn"><i class="fas fa-play"></i></div>
     </div>
-    <div class="video-label before">Raw Footage</div>
+    <div class="video-label before">Original</div>
 </div>
 
 
@@ -1151,6 +1156,7 @@ playButtons.forEach(button => {
     </script>
 </body>
 </html>
+
 
 
 

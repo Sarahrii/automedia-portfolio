@@ -389,6 +389,20 @@
     box-shadow: 0 8px 20px rgba(255, 46, 46, 0.6);
 }
 
+        .video-item:hover .play-btn {
+    opacity: 1;
+}
+
+.play-btn {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.video-item.playing .play-btn {
+    opacity: 0; /* يختفي وقت التشغيل */
+}
+
+
 
         .video-label {
             color: var(--light);
@@ -880,7 +894,7 @@
                   <div class="video-overlay">
     <div class="video-controls">
         <div class="play-btn"><i class="fas fa-play"></i></div>
-        <div class="stop-btn"><i class="fas fa-stop"></i></div>
+       
     </div>
     <div class="video-label before">Raw Footage</div>
 </div>
@@ -894,7 +908,7 @@
                   <div class="video-overlay">
     <div class="video-controls">
         <div class="play-btn"><i class="fas fa-play"></i></div>
-        <div class="stop-btn"><i class="fas fa-stop"></i></div>
+        
     </div>
     <div class="video-label before">Raw Footage</div>
 </div>
@@ -1026,39 +1040,61 @@
                 scrollProgress.style.width = scrollPercent + '%';
             });
             
-            // Video play buttons
-            const playButtons = document.querySelectorAll('.play-btn');
-            playButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const videoItem = this.closest('.video-item');
-                    const video = videoItem.querySelector('video');
-                    
-                    if (video.paused) {
-                        video.play();
-                        videoItem.classList.add('playing');
-                        this.innerHTML = '<i class="fas fa-pause"></i>';
-                    } else {
-                        video.pause();
-                        videoItem.classList.remove('playing');
-                        this.innerHTML = '<i class="fas fa-play"></i>';
-                    }
-                });
-            });
-            // Stop buttons
-const stopButtons = document.querySelectorAll('.stop-btn');
+        
+       // Play / Pause button toggle + auto-hide
+const playButtons = document.querySelectorAll('.play-btn');
 
-stopButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-        const videoItem = this.closest('.video-item');
-        const video = videoItem.querySelector('video');
-        const playBtn = videoItem.querySelector('.play-btn');
+playButtons.forEach(button => {
 
-        video.pause();
-        video.currentTime = 0;  // يرجع لبداية الفيديو
-        videoItem.classList.remove('playing');
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    const videoItem = button.closest('.video-item');
+    const video = videoItem.querySelector('video');
+
+    let hideTimeout;
+
+    // تشغيل / إيقاف
+    button.addEventListener('click', () => {
+
+        if (video.paused) {
+            video.play();
+            videoItem.classList.add('playing');
+            button.innerHTML = '<i class="fas fa-pause"></i>';
+            
+            // إخفاء الزر بعد التشغيل
+            hideTimeout = setTimeout(() => {
+                button.style.opacity = '0';
+            }, 1500);
+
+        } else {
+            video.pause();
+            videoItem.classList.remove('playing');
+            button.innerHTML = '<i class="fas fa-play"></i>';
+            button.style.opacity = '1'; // يظهر عند الإيقاف
+        }
+    });
+
+    // إذا الماوس يتحرك داخل الفيديو → أظهر الزر
+    videoItem.addEventListener('mousemove', () => {
+        button.style.opacity = '1';
+        clearTimeout(hideTimeout);
+
+        // يخفي الزر إذا الفيديو شغّال
+        if (!video.paused) {
+            hideTimeout = setTimeout(() => {
+                button.style.opacity = '0';
+            }, 1500);
+        }
+    });
+
+    // إذا خرج الماوس → أخفيه لو الفيديو شغال
+    videoItem.addEventListener('mouseleave', () => {
+        if (!video.paused) {
+            button.style.opacity = '0';
+        }
     });
 });
+
+
+     
 
             // Comparison slider functionality
             const slider = document.querySelector('.comparison-slider');
@@ -1148,6 +1184,7 @@ stopButtons.forEach(btn => {
     </script>
 </body>
 </html>
+
 
 
 

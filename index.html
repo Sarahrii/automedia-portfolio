@@ -900,6 +900,38 @@
         </div>
     </section>
 
+    <section id="audio">
+    <h2 class="section-title">Engine Audio Comparison</h2>
+    <p class="section-subtitle">Listen to the before and after engine sound enhancement.</p>
+
+    <div class="video-section">
+        <h3 class="comparison-title">Engine Audio Showcase</h3>
+
+        <div class="video-comparison">
+
+            <!-- BEFORE -->
+            <div class="video-item">
+                <audio preload="auto">
+                    <source src="engineBefore.mp3" type="audio/mpeg">
+                </audio>
+                <div class="play-btn"><i class="fas fa-play"></i></div>
+                <div class="video-label before">Raw Engine Sound</div>
+            </div>
+
+            <!-- AFTER -->
+            <div class="video-item">
+                <audio preload="auto">
+                    <source src="engineAfter.mp3" type="audio/mpeg">
+                </audio>
+                <div class="play-btn"><i class="fas fa-play"></i></div>
+                <div class="video-label after">Enhanced Engine Sound</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
     <section class="services" id="services">
         <h2 class="section-title" style="color: var(--light);">Our Services</h2>
         <p class="section-subtitle" style="color: #ccc;">Comprehensive automotive media solutions for enthusiasts, collectors, and manufacturers.</p>
@@ -1025,7 +1057,7 @@
 
             playButtons.forEach(button => {
                 const videoItem = button.closest('.video-item');
-                const video = videoItem.querySelector('video');
+               const video = videoItem.querySelector('video, audio');
 
                 let hideTimeout;
 
@@ -1131,3 +1163,4 @@
     </script>
 </body>
 </html>
+

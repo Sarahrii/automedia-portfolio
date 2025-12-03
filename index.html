@@ -446,6 +446,77 @@
             opacity: 0;
         }
 
+        /* AUDIO SECTION */
+.audio-section {
+    background: var(--dark-bg);
+    border-radius: 20px;
+    padding: 4rem;
+    margin-bottom: 4rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.audio-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+
+.audio-item {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.audio-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    transition: opacity 0.3s;
+}
+
+.audio-item.playing .audio-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.audio-btn {
+    width: 80px;
+    height: 80px;
+    background: var(--secondary);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--light);
+    font-size: 2.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(255, 46, 46, 0.4);
+}
+
+.audio-label {
+    margin-top: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.audio-label.before {
+    color: #aaa;
+}
+
+.audio-label.after {
+    color: var(--secondary);
+}
+
+
         /* SERVICES */
 
         .services {
@@ -901,28 +972,40 @@
     </section>
 
    
+<section id="audio" class="audio-section">
+    <h2 class="section-title">Engine Sound – Before & After</h2>
+    <p class="section-subtitle">Listen to the transformation in engine sound with professional audio enhancement.</p>
 
-            <!-- BEFORE -->
-            <div class="video-item">
-                <audio preload="auto">
-                    <source src="engineBefore.mp3" type="audio/mpeg">
-                </audio>
-                <div class="play-btn"><i class="fas fa-play"></i></div>
-                <div class="video-label before">Raw Engine Sound</div>
+    <div class="audio-comparison">
+        
+        <!-- Before -->
+        <div class="audio-item">
+            <audio class="audio-before">
+                <source src="engineBefore.mp3" type="audio/mpeg">
+            </audio>
+
+            <div class="audio-overlay">
+                <div class="audio-btn"><i class="fas fa-play"></i></div>
+                <div class="audio-label before">Raw Engine</div>
             </div>
-
-            <!-- AFTER -->
-            <div class="video-item">
-                <audio preload="auto">
-                    <source src="engineAfter.mp3" type="audio/mpeg">
-                </audio>
-                <div class="play-btn"><i class="fas fa-play"></i></div>
-                <div class="video-label after">Enhanced Engine Sound</div>
-            </div>
-
         </div>
+
+        <!-- After -->
+        <div class="audio-item">
+            <audio class="audio-after">
+                <source src="engineAfter.mp3" type="audio/mpeg">
+            </audio>
+
+            <div class="audio-overlay">
+                <div class="audio-btn"><i class="fas fa-play"></i></div>
+                <div class="audio-label after">Enhanced Engine</div>
+            </div>
+        </div>
+
     </div>
 </section>
+
+  
 
 
     <section class="services" id="services">
@@ -1050,7 +1133,7 @@
 
             playButtons.forEach(button => {
                 const videoItem = button.closest('.video-item');
-               const video = videoItem.querySelector('video, audio');
+               const video = videoItem.querySelector('video');
 
                 let hideTimeout;
 
@@ -1088,6 +1171,45 @@
                     }
                 });
             });
+
+
+            // AUDIO PLAY / PAUSE
+const audioBtns = document.querySelectorAll('.audio-btn');
+
+audioBtns.forEach(btn => {
+    const audioItem = btn.closest('.audio-item');
+    const audio = audioItem.querySelector('audio');
+    let hideTimeout;
+
+    btn.addEventListener('click', () => {
+        // Pause all other audios
+        document.querySelectorAll('audio').forEach(a => {
+            if (a !== audio) a.pause();
+        });
+
+        document.querySelectorAll('.audio-item').forEach(item => {
+            if (item !== audioItem) item.classList.remove('playing');
+        });
+
+        // Play / Pause current audio
+        if (audio.paused) {
+            audio.play();
+            audioItem.classList.add('playing');
+            btn.innerHTML = '<i class="fas fa-pause"></i>';
+        } else {
+            audio.pause();
+            audioItem.classList.remove('playing');
+            btn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+    });
+
+    // Reset when audio ends
+    audio.addEventListener('ended', () => {
+        audioItem.classList.remove('playing');
+        btn.innerHTML = '<i class="fas fa-play"></i>';
+    });
+});
+
 
             // Comparison slider
             const slider = document.querySelector('.comparison-slider');
@@ -1156,5 +1278,6 @@
     </script>
 </body>
 </html>
+
 
 
